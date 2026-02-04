@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { Providers } from "../components/Provider";
-import TopNav from "@/components/layout/TopNav";
+
+import TopNavParent from "@/components/layout/TopNavParent";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,8 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`antialiased`}>
         <Providers>
-          <TopNav />
-          <main className="container p-10 mx-auto">{children}</main>
+          <TopNavParent />
+          <main className="container  mx-auto">{children}</main>
         </Providers>
       </body>
     </html>

@@ -1,16 +1,14 @@
 "use client";
-import {
-  Button,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from "@heroui/react";
+import { Button, Navbar, NavbarBrand, NavbarContent } from "@heroui/react";
 import Link from "next/link";
 import { GiMatchTip } from "react-icons/gi";
 import Navlink from "./Navlink";
-
-export default function TopNav() {
+import { Session } from "next-auth";
+import UserMenu from "./UserMenu";
+type Props = {
+  user: Session["user"];
+};
+export default function TopNav({ user }: Props) {
   return (
     <Navbar
       maxWidth="xl"
@@ -37,12 +35,28 @@ export default function TopNav() {
         <Navlink href="/messages" title="Messages" />
       </NavbarContent>
       <NavbarContent justify="end">
-        <Button variant="bordered" className="text-white">
-          Login
-        </Button>
-        <Button variant="bordered" className="text-white">
-          Register
-        </Button>
+        {user?.email ? (
+          <UserMenu user={user} />
+        ) : (
+          <>
+            <Button
+              as={Link}
+              href="/login"
+              variant="bordered"
+              className="text-white"
+            >
+              Login
+            </Button>
+            <Button
+              as={Link}
+              href="/register"
+              variant="bordered"
+              className="text-white"
+            >
+              Register
+            </Button>
+          </>
+        )}
       </NavbarContent>
     </Navbar>
   );
