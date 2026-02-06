@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { ActionResult } from "@/types";
 import { User } from "@prisma/client";
 import { LoginSchema } from "@/lib/schemas/loginSchema";
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 export async function registerUser(
@@ -73,4 +73,10 @@ export async function siginInUser(
     return { status: "error", error: "Somthing else Wrong:" };
     console.log(error);
   }
+}
+export async function getAuthUserId() {
+  const session = await auth();
+  const sourceUserId = session?.user?.id;
+  if (!sourceUserId || !session.user) throw new Error("Not Logined");
+  return session.user.id as string;
 }

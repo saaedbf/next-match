@@ -1,15 +1,23 @@
 import React, { ReactNode } from "react";
-import { getMemberByUserId } from "../actions/membersAction";
+import { getMemberByUserId } from "../../actions/membersAction";
 import MemberSideBar from "./MemberSideBar";
 import { notFound } from "next/navigation";
 import { Card } from "@heroui/react";
-import ClientCard from "./ClientCard";
+import ClientCard from "../ClientCard";
 import { auth } from "@/auth";
 
-export default async function Layout({ children }: { children: ReactNode }) {
-  const session = await auth();
-  if (!session?.user) return notFound();
-  const member = await getMemberByUserId(session.user.id);
+export default async function Layout({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: { userId: string };
+}) {
+  //const session = await auth();
+  const { userId } = await params;
+
+  if (!userId) return notFound();
+  const member = await getMemberByUserId(userId);
   if (!member) return notFound();
   return (
     <div className="grid px-10 grid-cols-12 h-[80vh] gap-5">
